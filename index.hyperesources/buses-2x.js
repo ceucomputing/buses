@@ -7,43 +7,43 @@ var model = {
 };
 
 var addressXY = [
-	[289, 242],		// At address 0
-	[289, 257],		// At address 1
-	[289, 273],		// At address 2
-	[289, 288],		// At address 3
-	[289, 304],		// At address 4
-	[289, 319],		// At address 5
-	[289, 335],		// At address 6
-	[289, 350],		// At address 7
-	[425, 242],		// At address 8
-	[425, 257],		// At address 9
-	[425, 273],		// At address 10
-	[425, 288],		// At address 11
-	[425, 304],		// At address 12
-	[425, 319],		// At address 13
-	[425, 335],		// At address 14
-	[425, 350],		// At address 15
-	[355, 196]		// At entry/exit
+	[419, 343],		// At address 0
+	[419, 363],		// At address 1
+	[419, 384],		// At address 2
+	[419, 404],		// At address 3
+	[419, 425],		// At address 4
+	[419, 445],		// At address 5
+	[419, 467],		// At address 6
+	[419, 487],		// At address 7
+	[601, 343],		// At address 8
+	[601, 363],		// At address 9
+	[601, 384],		// At address 10
+	[601, 404],		// At address 11
+	[601, 425],		// At address 12
+	[601, 445],		// At address 13
+	[601, 467],		// At address 14
+	[601, 487],		// At address 15
+	[504, 280]		// At entry/exit
 ];
 
 var dataXY = [
-	[258, 242],		// At address 0
-	[258, 257],		// At address 1
-	[258, 273],		// At address 2
-	[258, 288],		// At address 3
-	[258, 304],		// At address 4
-	[258, 319],		// At address 5
-	[258, 335],		// At address 6
-	[258, 350],		// At address 7
-	[395, 242],		// At address 8
-	[395, 257],		// At address 9
-	[395, 273],		// At address 10
-	[395, 288],		// At address 11
-	[395, 304],		// At address 12
-	[395, 319],		// At address 13
-	[395, 335],		// At address 14
-	[395, 350],		// At address 15
-	[321, 196]		// At entry/exit
+	[458, 343],		// At address 0
+	[458, 363],		// At address 1
+	[458, 384],		// At address 2
+	[458, 404],		// At address 3
+	[458, 425],		// At address 4
+	[458, 445],		// At address 5
+	[458, 467],		// At address 6
+	[458, 487],		// At address 7
+	[640, 343],		// At address 8
+	[640, 363],		// At address 9
+	[640, 384],		// At address 10
+	[640, 404],		// At address 11
+	[640, 425],		// At address 12
+	[640, 445],		// At address 13
+	[640, 467],		// At address 14
+	[640, 487],		// At address 15
+	[543, 280]		// At entry/exit
 ];
 
 var hypeDocument = null;
@@ -94,16 +94,18 @@ var ready = function(doc) {
 		});
 	}
 
-	for (i = 0; i < 16; ++i) {
-		hypeDocument.getElementById('memory-' + i).innerHTML = '0 0 0 0 0 0 0 0';
+	var digits = '0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1'
+	for (i = 0; i < 8; ++i) {
+		hypeDocument.getElementById('memory-' + i).innerHTML = digits.slice(i * 2, i * 2 + 15);
+		hypeDocument.getElementById('memory-' + (i + 8)).innerHTML = digits.slice(digits.length - i * 2 - 15, digits.length - i * 2);
 	}
 };
 
 var move = function(id, XY, address, duration) {
 	var element = hypeDocument.getElementById(id);
 	var targetXY = XY[address];
-	hypeDocument.setElementProperty(element, 'left', 140 + targetXY[0], duration);
-	hypeDocument.setElementProperty(element, 'top', 330 + targetXY[1], duration);
+	hypeDocument.setElementProperty(element, 'left', targetXY[0], duration);
+	hypeDocument.setElementProperty(element, 'top', targetXY[1], duration);
 }
 
 var disable = function() {

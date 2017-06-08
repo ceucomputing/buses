@@ -3,7 +3,7 @@
   <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
-	<title>index</title>
+	<title>Data Bus and Address Bus Simulator</title>
 	<style>
 		html {
 			height:100%;
@@ -13,24 +13,218 @@
 			margin:0;
 			height:100%;
 		}
+		table {
+			margin: 0 auto;
+		}
+		ol {
+			padding: 12px;
+		}
+		li {
+			font-size: 16px;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		p {
+			padding: 12px;
+		}
+		button {
+			width: 40%;
+		}
+		#status {
+			padding: 0;
+		}
 	</style>
 	<!-- copy these lines to your document head: -->
 
-	<meta name="viewport" content="user-scalable=yes, width=1200" />
+	<meta name="viewport" content="user-scalable=yes, width=800" />
 	<link rel="stylesheet" type="text/css" href="index.hyperesources/bootstrap.min.css" />
 	<script type="text/javascript" src="index.hyperesources/jquery-3.1.1.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="index.hyperesources/bootstrap-theme.min.css" />
 	<script type="text/javascript" src="index.hyperesources/buses-2x.js"></script>
+	<script type="text/javascript">
+		var hintBtn = null;
+		var statusLine = null;
+		var buzzerSnd = null;
+		var dingSnd = null;
+		var items = null;
+		var currentQn = 0;
+		var currentItem = null;
+		var answers = [0, 1, 1, 1, 0, 0];
+
+		function submitQn() {
+			if ($(currentItem.find('input')[answers[currentQn]]).prop('checked')) {
+				statusLine.innerHTML = 'That\'s right!';
+				statusLine.style.color = 'green';
+				dingSnd.currentTime = 0;
+				dingSnd.play();
+				currentQn = (currentQn + 1) % items.length;
+				currentItem = $(items[currentQn]);
+				displayQn();
+				if (currentQn == items.length - 1) {
+					$(statusLine).hide();
+					$('button').hide();
+				}
+			} else {
+				statusLine.innerHTML = 'That\'s incorrect! Please read the hint.';
+				statusLine.style.color = 'red';
+				buzzerSnd.currentTime = 0;
+				buzzerSnd.play();
+				hintQn();
+			}
+		}
+
+		function displayQn() {
+			items.hide();
+			currentItem.show();
+			currentItem.find('.bg-info').hide();
+			currentItem.find('input').prop('checked', false);
+			hintBtn.prop('disabled', false);
+		}
+
+		function hintQn() {
+			currentItem.find('.bg-info').show();	
+			hintBtn.prop('disabled', true);
+		}
+
+		$(document).ready(function() {
+			hintBtn = $('#hint');
+			statusLine = $('#status')[0];
+			buzzerSnd = $('#buzzer')[0];
+			dingSnd = $('#ding')[0];
+			items = $('li');
+			currentQn = 0;
+			currentItem = $(items[currentQn]);
+			displayQn();
+		});
+	</script>
 
 	<!-- end copy -->
   </head>
   <body>
 	<!-- copy these lines to your document: -->
+	<table><tr><td>
+		<div id="index_hype_container" style="margin:auto;position:relative;width:800px;height:533px;overflow:hidden;">
+			<script type="text/javascript" charset="utf-8" src="index.hyperesources/index_hype_generated_script.js?66936"></script>
+		</div>
+	</td><td style="vertical-align: top;">
+		<div style="height: 420px; width: 320px;"><form>
+			<ol>
+				<li><h1>Question 1</h1>
+				Use the simulator to read the data stored in address 10 of memory. In what direction is data sent on the <span style="color: red;">data bus</span> during this process?
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    From memory to the processor
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    From the processor to memory
+				  </label>
+				</div>
+				<p class="bg-info">Hint: Memory uses the <span style="color: red;">data bus</span> to transport the data that was read to the processor.</p>
+				</li>
 
-	<div id="index_hype_container" style="margin:auto;position:relative;width:1200px;height:800px;overflow:hidden;">
-		<script type="text/javascript" charset="utf-8" src="index.hyperesources/index_hype_generated_script.js?77337"></script>
-	</div>
+				<li><h1>Question 2</h1>
+				Use the simulator to read the data stored in address 8 of memory. In what direction is data sent on the <span style="color: green;">address bus</span> during this process?
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    From memory to the processor
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    From the processor to memory
+				  </label>
+				</div>
+				<p class="bg-info">Hint: Address information always comes from the processor as it is the part responsible for following instructions.</p>
+				</li>
 
+				<li><h1>Question 3</h1>
+				Use the simulator to write “11110000” into address 10 of memory. In what direction is data sent on the <span style="color: red;">data bus</span> during this process?
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    From memory to the processor
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    From the processor to memory
+				  </label>
+				</div>
+				<p class="bg-info">Hint: The processor uses the <span style="color: red;">data bus</span> to transport the data meant for storage to memory.</p>
+				</li>
+
+				<li><h1>Question 4</h1>
+				Use the simulator to write “00001111” into address 8 of memory. In what direction is data sent on the <span style="color: green;">address bus</span> during this process?
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    From memory to the processor
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    From the processor to memory
+				  </label>
+				</div>
+				<p class="bg-info">Hint: Address information always comes from the processor as it is the part responsible for following instructions.</p>
+				</li>
+
+				<li><h1>Question 5</h1>
+				The data bus is bi-directional because data can be sent in both directions between the processor and memory on the <span style="color: red;">data bus</span>. True or false?
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    True
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    False
+				  </label>
+				</div>
+				<p class="bg-info">Hint: The same <span style="color: red;">data bus</span> is used for both writing data to memory and reading data from memory.</p>
+				</li>
+
+				<li><h1>Question 6</h1>
+				The <span style="color: green;">address bus</span> is uni-directional because address information is always sent in one direction only from the processor to memory. True or false?
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    True
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="answer">
+				    False
+				  </label>
+				</div>
+				<p class="bg-info">Hint: Data on the <span style="color: green;">address bus</span> is never sent from memory to the processor.</p>
+				</li>
+
+				<li><h1>Congratulations, you may proceed to the next part of the lesson!</h1></li>
+			</ol>
+		</form></div>
+		<p style="text-align: center;"><button id="hint" type="button" class="btn btn-info" onclick="hintQn();">Hint</button> <button type="button" class="btn btn-primary" onclick="submitQn();">Submit</button></p>
+		<p style="text-align: center; font-size: 16px;" id="status"></p>
+	</td></tr></table>
+
+	<audio preload="auto" id="ding">
+		<source src="ding.mp3" type="audio/mpeg">
+	</audio>
+	<audio preload="auto" id="buzzer">
+		<source src="buzzer.mp3" type="audio/mpeg">
+	</audio>
 	<!-- end copy -->
 	
 
